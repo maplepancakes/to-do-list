@@ -1,15 +1,34 @@
-import objectStorage from "./objectStorage";
+import dataStorage from "./dataStorage";
 
 const updateObject = (function()
 {
-    const appendTaskToProject = function(task, projectName)
+    const addTask = function(task, projectName)
     {
-        objectStorage.projectObject[`${projectName}`].push(task);
+        dataStorage.projectObject[`${projectName}`].push(task);
 
-        console.log(objectStorage.consoleLogStorage());
+        console.log(dataStorage.consoleLogStorage());
     };
 
-    return {appendTaskToProject};
+    const editTask = function(taskID, projectName, editedName, editedDescription, editedDueDate, editedPriority, editedNotes)
+    {
+        
+    };
+
+    const deleteTask = function(taskID, projectName)
+    {
+        let taskToDelete = dataStorage.projectObject[`${projectName}`];
+
+        taskToDelete = taskToDelete.filter(function(obj)
+        {
+            return obj.taskID !== taskID;
+        });
+
+        dataStorage.projectObject[`${projectName}`] = taskToDelete;
+
+        console.log(dataStorage.consoleLogStorage());
+    };
+
+    return {addTask, editTask, deleteTask};
 })();
 
 export default updateObject;
