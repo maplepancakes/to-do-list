@@ -37,7 +37,7 @@ toDoTask (taskName, taskDescription, dueDate, priority, notes)
 Using the created project "Miscellaneous Tasks" example, the created object will be stored in the property of the "Miscellaneous Tasks" key.
     (e.g. ProjectObject["Miscellaneous Tasks"].push(new toDoTask (`Clean dog cage`, ``, `31/05/2021`, `low`, ``))
     
-    ProjectObject = 
+    projectObject = 
     {
         "Miscellaneous Tasks": 
         {
@@ -58,6 +58,11 @@ createObject.createProject(`Main Tasks`);
 
 let task1 = new createObject.createTask(`a`, `b`, `c`, `d`, `e`);
 let task2 = new createObject.createTask(`gay`, ``,``,``,``);
+let task3 = new createObject.createTask(`gay`, ``,``,``,``);
+let task4 = new createObject.createTask(`gay`, ``,``,``,``);
 
-updateObject.appendTaskToProject(task1, `Miscellaneous Tasks`);
-updateObject.appendTaskToProject(task2, `Miscellaneous Tasks`);
+updateObject.addTask(task1, `Miscellaneous Tasks`);
+updateObject.addTask(task2, `Miscellaneous Tasks`);
+updateObject.addTask(task3, `Miscellaneous Tasks`);
+updateObject.addTask(task4, `Miscellaneous Tasks`);
+
