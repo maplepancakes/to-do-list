@@ -65,4 +65,3 @@ updateObject.addTask(task1, `Miscellaneous Tasks`);
 updateObject.addTask(task2, `Miscellaneous Tasks`);
 updateObject.addTask(task3, `Miscellaneous Tasks`);
 updateObject.addTask(task4, `Miscellaneous Tasks`);
-
