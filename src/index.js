@@ -49,3 +49,15 @@ Using the created project "Miscellaneous Tasks" example, the created object will
         }
     })
 */
+
+import createObject from "./createObject";
+import updateObject from "./updateObject";
+
+createObject.createProject(`Miscellaneous Tasks`);
+createObject.createProject(`Main Tasks`);
+
+let task1 = new createObject.createTask(`a`, `b`, `c`, `d`, `e`);
+let task2 = new createObject.createTask(`gay`, ``,``,``,``);
+
+updateObject.appendTaskToProject(task1, `Miscellaneous Tasks`);
+updateObject.appendTaskToProject(task2, `Miscellaneous Tasks`);

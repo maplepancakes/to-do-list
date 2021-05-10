@@ -1,9 +1,13 @@
+import objectStorage from "./objectStorage";
+
 const createObject = (function()
 {
     const createProject = function(projectName)
     {
-        this.projectName = projectName;
-    }
+        objectStorage.projectObject[`${projectName}`] = [];
+
+        objectStorage.consoleLogStorage();
+    };
 
     const createTask = function(taskName, taskDescription, dueDate, priority, notes)
     {
@@ -12,9 +16,9 @@ const createObject = (function()
         this.dueDate = dueDate;
         this.priority = priority;
         this.notes = notes;
-    }
+    };
 
-    return {createProject, createTask}
+    return {createProject, createTask};
 })();
 
 export default createObject;
