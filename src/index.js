@@ -50,8 +50,8 @@ Using the created project "Miscellaneous Tasks" example, the created object will
     })
 */
 
-import createObject from "./createObject";
-import updateObject from "./updateObject";
+import createObject from "./models/createObject";
+import updateObject from "./models/updateObject";
 
 createObject.createProject(`Miscellaneous Tasks`);
 createObject.createProject(`Main Tasks`);
