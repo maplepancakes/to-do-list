@@ -4,13 +4,58 @@
         <meta charset="UTF-8"/>
         <link href="css/reset.css" rel="stylesheet" type="text/css"/>
         <link href="css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="https://fonts.gstatic.com" rel="preconnect" >
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet"> 
         <Title>To Do List</TItle>
     </head>
     <body>
+        <header>
+            <h1>To Do List ✔</h1>
+            <button id="new-project-button" class="button-style" type="menu">+ Add Project</button>
+        </header>
+
         <div id="content">
+            <div id="project-container">
+                <h2 id="project-header" class="project-contents-format">Projects</h2>
 
+                <div id="project-listing">
+                    <div id="project-content-1" class="project-contents-format">
+                        <div id="project-description-1" class="project-content">Main Tasks</div>
+                        <div id="add-task-1" class="project-content">+</div>
+                        <div id="new-task-input">
+                            <label for="task-name">Task Name:</label>
+                            <input name="task-name" type="text"/>
+                            <label for="task-description">Task Description:</label>
+                            <input name="task-description" type="text"/>
+                            <label for="due-date">Due Date:</label>
+                            <input name="due-date" type="date"/>
+                            <label for="priority">Priority</label>
+                            <select name="priority">
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                            <label for="notes">Notes</label>
+                            <input id="notes-input" name="notes" type="text"/>
+                            <button id="new-task-button" type="submit" class="button-style">Add Task</button>
+                        </div>
+                    </div>
+
+                    <div id="project-content-2" class="project-contents-format">
+                        <div id="project-description-2" class="project-content">Miscellaneous Tasks</div>
+                        <div id="add-task-2" class="project-content">+</div>
+                    </div>
+                </div>
+            </div>
+            <div id="task-container">
+                <h1 id="task-header">Main Tasks</h1>
+                <div id="task-listing">
+                    <div id="task-content-1">
+                        
+                    </div>
+                </div>
+            </div>
         </div>
-
         <script src="./main.js"></script>
     </body>
 </html>
