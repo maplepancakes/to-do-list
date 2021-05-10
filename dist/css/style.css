@@ -1,0 +1,109 @@
+body
+{
+    background-color: #616161;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+
+#content
+{
+    display: grid;
+    grid-template-columns: 200px auto;
+    grid-template-rows: 100vh auto;
+}
+
+header
+{
+    background-color: #212121;
+    min-height: 80px;
+    display: flex;
+}
+
+h1
+{
+    font-size: 40px;
+    padding-top: 20px;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+#project-container
+{
+    background-color: #424242;
+}
+
+.button-style
+{
+    background-color: #FFA000;
+    border-radius: 10px;
+    border: none;
+    color: inherit;
+}
+
+.project-content
+{
+    font-weight: bold;
+}
+
+.button-style:hover, .project-content:hover
+{
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.button-style:active
+{
+    border: 2px solid #FF6F00;
+}
+
+#new-project-button
+{
+    min-width: 100px;;
+    min-height: 50px;;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#project-header
+{
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: inherit;
+}
+
+#project-listing
+{
+    margin-top: 10px;
+}
+
+.project-contents-format
+{
+    display: grid;
+    grid-template-columns: 170px auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+    "project-description add-task-button"
+    "new-task-input new-task-input";
+    grid-row-gap: 5px;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+#task-container
+{
+    padding-left: 10px;
+}
+
+#new-task-input
+{
+    display: grid;
+    grid-template-rows: auto;
+    grid-row-gap: 6px;
+}
+
+#new-task-button
+{
+    min-height: 30px;
+}
