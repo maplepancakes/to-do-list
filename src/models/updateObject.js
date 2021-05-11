@@ -7,7 +7,7 @@ const updateObject = (function()
         dataStorage.projectObject[`${projectName}`].push(task);
 
         console.log(dataStorage.consoleLogStorage());
-    };
+    }
 
     const editTask = function(taskID, projectName, editedName, editedDescription, editedDueDate, editedPriority, editedNotes)
     {
@@ -18,7 +18,7 @@ const updateObject = (function()
         taskToEdit[taskID].dueDate = editedDueDate;
         taskToEdit[taskID].priority = editedPriority;
         taskToEdit[taskID].notes = editedNotes;
-    };
+    }
 
     const deleteTask = function(taskID, projectName)
     {
@@ -32,7 +32,7 @@ const updateObject = (function()
         dataStorage.projectObject[`${projectName}`] = taskToDelete;
 
         console.log(dataStorage.consoleLogStorage());
-    };
+    }
 
     return {addTask, editTask, deleteTask};
 })();

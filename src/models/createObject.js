@@ -7,7 +7,7 @@ const createObject = (function()
         dataStorage.projectObject[`${projectName}`] = [];
 
         dataStorage.consoleLogStorage();
-    };
+    }
 
     const createTask = function(taskName, taskDescription, dueDate, priority, notes)
     {
@@ -19,7 +19,7 @@ const createObject = (function()
         this.notes = notes;
 
         dataStorage.taskID++;
-    };
+    }
 
     return {createProject, createTask};
 })();

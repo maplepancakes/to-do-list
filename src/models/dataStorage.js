@@ -6,7 +6,7 @@ const dataStorage = (function()
     const consoleLogStorage = function()
     {
         console.log(projectObject);
-    };
+    }
 
     return {taskID, projectObject, consoleLogStorage};
 })();
