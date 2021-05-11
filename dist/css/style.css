@@ -22,7 +22,7 @@ header
 h1
 {
     font-size: 40px;
-    padding-top: 20px;
+    padding-top: 25px;
     padding-left: 10px;
     font-weight: bold;
 }
@@ -45,7 +45,7 @@ h1
     font-weight: bold;
 }
 
-.button-style:hover, .project-content:hover
+.button-style:hover, .project-content:hover, .icon:hover
 {
     cursor: pointer;
     opacity: 0.8;
@@ -107,3 +107,43 @@ h1
 {
     min-height: 30px;
 }
+
+.task-contents-format
+{
+    display: grid;
+    grid-template-columns: 20px auto 115px 80px 80px;
+    grid-column-gap: 5px;
+}
+
+#task-listing
+{
+    margin-top: 10px;
+    padding-left: 12px;
+    padding-right: 20px;
+    font-size: 20px;
+}
+
+.icon
+{
+    color: #FFA000;
+    font-weight: bold;
+}
+
+.separator
+{
+    border-top: 1px solid white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.task-container-buttons
+{
+    height: 25px;
+}
+
+.edit-textbox
+{
+    height: 0px;
+}
+
+
