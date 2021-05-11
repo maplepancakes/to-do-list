@@ -32,6 +32,11 @@ h1
     background-color: #424242;
 }
 
+#project-header, #new-project-form-container
+{
+    margin-left: 15px;
+}
+
 .button-style
 {
     background-color: #FFA000;
@@ -39,6 +44,12 @@ h1
     border: none;
     color: inherit;
     font-weight: bold;
+}
+
+#new-project-form-container
+{
+    margin-top: 10px;
+    margin-right: 10px;
 }
 
 .project-content
@@ -74,11 +85,6 @@ h1
     color: inherit;
 }
 
-#project-listing
-{
-    margin-top: 10px;
-}
-
 .project-contents-format
 {
     display: grid;
@@ -102,14 +108,14 @@ h1
     display: flex;
 }
 
-#new-task-input
+#new-task-input, #new-project-form-container
 {
     display: grid;
     grid-template-rows: auto;
     grid-row-gap: 6px;
 }
 
-#new-task-button
+#new-task-button, #submit-new-project-button
 {
     min-height: 30px;
 }
