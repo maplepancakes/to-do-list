@@ -1,3 +1,5 @@
+import dataStorage from "../models/dataStorage";
+
 const page = (function()
 {
     const body = document.querySelector(`body`);
@@ -72,14 +74,54 @@ const page = (function()
         newProjectFormContainer.appendChild(submitNewProjectButton);
     }
 
+    const updateProjectListing = function(value)
+    {
+        const projectContainer = document.querySelector(`#project-container`);
+
+        const projectContent = document.createElement(`div`);
+        const projectDescription = document.createElement(`div`);
+        const addTaskButton = document.createElement(`div`);
+
+        console.log(`Updating project listing with value: ${value}`);
+
+        projectContent.classList.add(`project-contents-format`);
+        projectContent.setAttribute(`id`, `project-content-${dataStorage.getProjectID()}`);
+        
+        projectDescription.classList.add(`project-content`);
+        projectDescription.setAttribute(`id`, `project-description-${dataStorage.getProjectID()}`);
+        projectDescription.textContent = value;
+
+        addTaskButton.classList.add(`project-content`);
+        addTaskButton.setAttribute(`id`, `add-task-${dataStorage.getProjectID}`);
+        addTaskButton.textContent = `+`;
+
+        projectContainer.appendChild(projectContent);
+        projectContent.appendChild(projectDescription);
+        projectContent.appendChild(addTaskButton);
+    }
+
     const updateAttribute = function(selector, attribute, value)
     {
         const element = document.querySelector(selector);
 
-        element.setAttribute(attribute, value);
+        element[`${attribute}`] = `${value}`;
     }
 
-    return {loadInitialContents, loadNewProjectForm, updateAttribute};
+    const removeElementFromParent = function(parentSelector, childSelector)
+    {
+        const parentElement = document.querySelector(`${parentSelector}`);
+        const childElement = document.querySelector(`${childSelector}`);
+
+        parentElement.removeChild(childElement);
+    }
+
+    return {
+        loadInitialContents, 
+        loadNewProjectForm, 
+        updateProjectListing,
+        updateAttribute, 
+        removeElementFromParent,
+    };
 })();
 
 export default page
