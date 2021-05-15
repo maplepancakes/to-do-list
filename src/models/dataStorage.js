@@ -9,46 +9,11 @@ const dataStorage = (function()
         console.log(projectObject);
     }
 
-    const incrementTaskID = function()
-    {
-        taskID++;
-        console.log(`Increased taskID to: ${taskID}`);
-    }
-
-    const incrementProjectID = function()
-    {
-        projectID++;
-        console.log(`Increased projectID to: ${projectID}`);
-    }
-
-    const storeProject = function(value)
-    {
-        projectObject[`${value}`] = [];
-    }
-
-    const getTaskID = function()
-    {
-        return taskID;
-    }
-
-    const getProjectID = function()
-    {
-        return projectID;
-    }
-
-    const getProjectObjectValue = function(key)
-    {
-        return projectObject[`${key}`];
-    }
-
     return {
+        taskID,
+        projectID,
+        projectObject,
         consoleLogStorage,
-        incrementTaskID, 
-        incrementProjectID, 
-        storeProject,
-        getTaskID,
-        getProjectID,
-        getProjectObjectValue,
     };
 })();
 

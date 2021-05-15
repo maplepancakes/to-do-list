@@ -1,14 +1,12 @@
 import dataStorage from "./dataStorage";
+import updateObject from "./updateObject";
 
 const createObject = (function()
 {
     const createProject = function(projectName)
     {
-        dataStorage.storeProject(projectName);
-
-        dataStorage.incrementProjectID();
-
-        dataStorage.consoleLogStorage();
+        updateObject.addProject(projectName);
+        updateObject.incrementProjectID();
     }
 
     const createTask = function(taskName, taskDescription, dueDate, priority, notes)
@@ -20,7 +18,7 @@ const createObject = (function()
         this.priority = priority;
         this.notes = notes;
 
-        dataStorage.incrementTaskID();
+        updateObject.incrementTaskID();
     }
 
     return {createProject, createTask};
