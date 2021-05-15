@@ -68,7 +68,12 @@ h1
     border: 2px solid #FF6F00;
 }
 
-#new-project-button, #delete-project-button
+#delete-project-button-hidden
+{
+    display: none;
+}
+
+#new-project-button, #minimize-new-project-form-button, #delete-project-button
 {
     min-width: 112px;;
     min-height: 50px;;
