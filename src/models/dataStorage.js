@@ -4,6 +4,13 @@ const dataStorage = (function()
     let projectID = 0;
     let projectObject = {};
 
+    const priorityColour =
+    [   
+        `priority-color-high`,
+        `priority-color-medium`,
+        `priority-color-low`,
+    ];
+
     const consoleLogStorage = function()
     {
         console.log(projectObject);
@@ -13,6 +20,7 @@ const dataStorage = (function()
         taskID,
         projectID,
         projectObject,
+        priorityColour,
         consoleLogStorage,
     };
 })();
