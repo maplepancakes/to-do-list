@@ -138,6 +138,53 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
                             { 
                                 page.loadNewTaskForm(`#project-content-${projectContentID}`);
                                 page.updateAttribute(`#add-task-${projectContentID}`, `textContent`, `-`);
+
+                                const taskNameInput = document.querySelector("input[name='task-name']");
+                                const dueDateInput = document.querySelector("input[name='due-date']");
+                                const priorityInput = document.querySelector("select[name='priority']");
+
+                                const newTaskButton = document.querySelectorAll(`#new-task-button`);
+
+                                newTaskButton.addEventListener(`click`, function(e)
+                                {
+                                    let chosenPriorityColour = function()
+                                    {
+                                        if (priorityInput.value === `High`)
+                                        {
+                                            return dataStorage.priorityColour[0];
+                                        }
+                                        else if (priorityInput.value === `Medium`)
+                                        {
+                                            return dataStorage.priorityColour[1];
+                                        }
+                                        else if (priorityInput.value === `Low`)
+                                        {
+                                            return dataStorage.priorityColour[2];
+                                        }
+                                    };
+
+                                    page.updateTaskListing(taskNameInput.value, dueDateInput.value, chosenPriorityColour(), priorityInput.value);
+                                    page.appendSeparator();
+
+                                    const projectName = document.querySelector(`#project-description-${projectContentID}`);
+                                    console.log(projectName);
+
+                                    const newTask = new createObject.createTask(taskNameInput.value, dueDateInput.value, chosenPriorityColour(), priorityInput.value);
+                                    connsole.log(newTask);
+                                    //updateObject.addTask(newTask, )
+
+                                    /*
+                                    REQUIREMENTS: -
+                                    - task listing must be updated for chosen project only (both display and storage)
+                                    - input for all fields cannot be blank
+                                    - task listing will only be displayed if the project name is clicked
+                                    */
+
+                                    /*
+                                    To fix: -
+                                    - newTaskButton variable is not selecting all the task buttons
+                                    */
+                                });
                             }
                         };
                     }
