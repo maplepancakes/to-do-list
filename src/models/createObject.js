@@ -9,14 +9,13 @@ const createObject = (function()
         updateObject.incrementProjectID();
     }
 
-    const createTask = function(taskName, taskDescription, dueDate, priority, notes)
+    const createTask = function(taskName, dueDate, priorityColour, priority)
     {
         this.taskID = dataStorage.taskID;
         this.taskName = taskName;
-        this.taskDescription = taskDescription;
         this.dueDate = dueDate;
+        this.priorityColour = priorityColour;
         this.priority = priority;
-        this.notes = notes;
 
         updateObject.incrementTaskID();
     }
