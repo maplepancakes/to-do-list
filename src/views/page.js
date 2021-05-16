@@ -55,6 +55,7 @@ const page = (function()
         const taskHeaderContainer = document.createElement(`div`);
         const taskHeader = document.createElement(`h1`);
         const deleteProjectButton = document.createElement(`button`);
+        const taskListing = document.createElement(`div`);
 
         console.log(`Loading task container...`);
 
@@ -68,10 +69,13 @@ const page = (function()
         deleteProjectButton.classList.add(`button-style`);
         deleteProjectButton.setAttribute(`id`, `delete-project-button-hidden`);
 
+        taskListing.setAttribute(`id`, `task-listing`);
+
         mainContentContainer.appendChild(taskContainer);
         taskContainer.appendChild(taskHeaderContainer);
         taskHeaderContainer.appendChild(taskHeader);
         taskHeaderContainer.appendChild(deleteProjectButton);
+        taskContainer.appendChild(taskListing);
     }
     
     const loadInitialContents = function()
@@ -203,6 +207,60 @@ const page = (function()
         newTaskInput.appendChild(newTaskButton);
     }
 
+    const updateTaskListing = function(taskNameTextContent, dueDateTextContent, priorityColour, priorityTextContent)
+    {
+        const taskListing = document.querySelector(`#task-listing`);
+
+        const taskContent = document.createElement(`div`);
+        const deleteIcon = document.createElement(`label`);
+        const taskName = document.createElement(`label`);
+        const dueDate = document.createElement(`label`);
+        const priority = document.createElement(`label`);
+        const editButton = document.createElement(`button`);
+        
+        taskContent.classList.add(`task-contents-format`);
+        taskContent.setAttribute(`id`, `task-content-${dataStorage.taskID}`);
+
+        deleteIcon.classList.add(`icon`);
+        deleteIcon.setAttribute(`id`, `delete-icon-${dataStorage.taskID}`);
+        deleteIcon.textContent = `X`;
+
+        taskName.setAttribute(`id`, `task-name-${dataStorage.taskID}`);
+        taskName.textContent = `${taskNameTextContent}`;
+
+        dueDate.setAttribute(`id`, `due-date-${dataStorage.taskID}`);
+        dueDate.textContent = `${dueDateTextContent}`;
+
+        priority.classList.add(`${priorityColour}`);
+        priority.setAttribute(`id`, `priority-${dataStorage.taskID}`);
+        priority.textContent = `${priorityTextContent}`;
+
+        editButton.classList.add(`button-style`);
+        editButton.classList.add(`task-container-buttons`);
+        editButton.setAttribute(`id`, `edit-button-${dataStorage.taskID}`);
+        editButton.setAttribute(`type`, `menu`);
+        editButton.textContent = `✏️ Edit`;
+
+        taskListing.appendChild(taskContent);
+        taskContent.appendChild(deleteIcon);
+        taskContent.appendChild(taskName);
+        taskContent.appendChild(dueDate);
+        taskContent.appendChild(priority);
+        taskContent.appendChild(editButton);
+    }
+
+    const appendSeparator = function()
+    {
+        const taskListing = document.querySelector(`#task-listing`);
+
+        const separator = document.createElement(`div`);
+
+        separator.classList.add(`separator`);
+        separator.setAttribute(`id`, `separator-${dataStorage.taskID}`);
+
+        taskListing.appendChild(separator);
+    }
+
     const updateAttribute = function(selector, attribute, value)
     {
         const element = document.querySelector(`${selector}`);
@@ -227,6 +285,8 @@ const page = (function()
         loadNewProjectForm, 
         updateProjectListing,
         loadNewTaskForm,
+        updateTaskListing,
+        appendSeparator,
         updateAttribute, 
         removeElementFromParent,
     };
