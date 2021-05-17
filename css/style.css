@@ -68,7 +68,7 @@ h1
     border: 2px solid #FF6F00;
 }
 
-#delete-project-button-hidden
+#delete-project-button-hidden, .task-content-hidden
 {
     display: none;
 }
