@@ -171,7 +171,10 @@ const page = (function()
         dueDateLabel.textContent = `Due Date:`;
 
         dueDateInput.setAttribute(`name`, `due-date`);
-        dueDateInput.setAttribute(`type`, `date`);
+        dueDateInput.setAttribute(`type`, `text`);
+        dueDateInput.setAttribute(`onblur`, "this.type='text'");
+        dueDateInput.setAttribute(`placeholder`, `YYYY/MM/DD`);
+        dueDateInput.setAttribute(`onfocus`, "this.type='date'");
 
         selectPriorityLabel.setAttribute(`for`, `priority`);
         selectPriorityLabel.textContent = `Priority`;
@@ -207,7 +210,7 @@ const page = (function()
         newTaskInput.appendChild(newTaskButton);
     }
 
-    const updateTaskListing = function(taskNameTextContent, dueDateTextContent, priorityColour, priorityTextContent)
+    const updateTaskListing = function(taskID, taskNameTextContent, dueDateTextContent, priorityColour, priorityTextContent)
     {
         const taskListing = document.querySelector(`#task-listing`);
 
@@ -219,25 +222,28 @@ const page = (function()
         const editButton = document.createElement(`button`);
         
         taskContent.classList.add(`task-contents-format`);
-        taskContent.setAttribute(`id`, `task-content-${dataStorage.taskID}`);
+        taskContent.setAttribute(`id`, `task-content-${taskID}`);
 
         deleteIcon.classList.add(`icon`);
-        deleteIcon.setAttribute(`id`, `delete-icon-${dataStorage.taskID}`);
+        deleteIcon.setAttribute(`id`, `delete-icon-${taskID}`);
         deleteIcon.textContent = `X`;
 
-        taskName.setAttribute(`id`, `task-name-${dataStorage.taskID}`);
+        taskName.classList.add(`task-container-labels`);
+        taskName.setAttribute(`id`, `task-name-${taskID}`);
         taskName.textContent = `${taskNameTextContent}`;
 
-        dueDate.setAttribute(`id`, `due-date-${dataStorage.taskID}`);
+        dueDate.classList.add(`task-container-labels`);
+        dueDate.setAttribute(`id`, `due-date-${taskID}`);
         dueDate.textContent = `${dueDateTextContent}`;
 
+        priority.classList.add(`task-container-labels`);
         priority.classList.add(`${priorityColour}`);
-        priority.setAttribute(`id`, `priority-${dataStorage.taskID}`);
+        priority.setAttribute(`id`, `priority-${taskID}`);
         priority.textContent = `${priorityTextContent}`;
 
         editButton.classList.add(`button-style`);
         editButton.classList.add(`task-container-buttons`);
-        editButton.setAttribute(`id`, `edit-button-${dataStorage.taskID}`);
+        editButton.setAttribute(`id`, `edit-button-${taskID}`);
         editButton.setAttribute(`type`, `menu`);
         editButton.textContent = `✏️ Edit`;
 
@@ -249,14 +255,14 @@ const page = (function()
         taskContent.appendChild(editButton);
     }
 
-    const appendSeparator = function()
+    const appendSeparator = function(taskID)
     {
         const taskListing = document.querySelector(`#task-listing`);
 
         const separator = document.createElement(`div`);
 
         separator.classList.add(`separator`);
-        separator.setAttribute(`id`, `separator-${dataStorage.taskID}`);
+        separator.setAttribute(`id`, `separator-${taskID}`);
 
         taskListing.appendChild(separator);
     }
@@ -270,6 +276,16 @@ const page = (function()
         element[`${attribute}`] = `${value}`;
     }
 
+    const updateAllAttributes = function(selector, attribute, value)
+    {
+        const nodeList = document.querySelectorAll(`${selector}`);
+
+        for (let i = 0; i < nodeList.length; i++)
+        {
+            nodeList[i][`${attribute}`] = `${value}`;
+        }
+    }
+
     const removeElementFromParent = function(parentSelector, childSelector)
     {
         const parentElement = document.querySelector(`${parentSelector}`);
@@ -280,6 +296,19 @@ const page = (function()
         parentElement.removeChild(childElement);
     }
 
+    const removeAllElementsFromParent = function(parentSelector, childSelector)
+    {
+        const parentElement = document.querySelector(`${parentSelector}`);
+        const childNodeList = document.querySelectorAll(`${childSelector}`);
+
+        console.log(`Removing all ${childNodeList} from ${parentElement.id}`);
+
+        for (let i = 0; i < childNodeList.length; i++)
+        {
+            parentElement.removeChild(childNodeList[i]);
+        }
+    }
+
     return {
         loadInitialContents, 
         loadNewProjectForm, 
@@ -288,7 +317,9 @@ const page = (function()
         updateTaskListing,
         appendSeparator,
         updateAttribute, 
+        updateAllAttributes,
         removeElementFromParent,
+        removeAllElementsFromParent,
     };
 })();
 
