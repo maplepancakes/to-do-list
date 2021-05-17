@@ -11,6 +11,11 @@ const dataStorage = (function()
         `priority-color-low`,
     ];
 
+    const getTaskForProject = function(projectName)
+    {
+        return projectObject[`${projectName}`];
+    }
+
     const consoleLogStorage = function()
     {
         console.log(projectObject);
@@ -21,6 +26,7 @@ const dataStorage = (function()
         projectID,
         projectObject,
         priorityColour,
+        getTaskForProject,
         consoleLogStorage,
     };
 })();
