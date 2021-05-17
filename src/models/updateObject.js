@@ -33,7 +33,6 @@ const updateObject = (function()
     const addTask = function(task, projectName)
     {
         dataStorage.projectObject[`${projectName}`].push(task);
-
         console.log(dataStorage.consoleLogStorage());
     }
 
@@ -48,18 +47,29 @@ const updateObject = (function()
         taskToEdit[taskID].notes = editedNotes;
     }
 
-    const deleteTask = function(taskID, projectName)
+    const deleteTask = function(ID, projectName)
     {
         let taskToDelete = dataStorage.projectObject[`${projectName}`];
 
         taskToDelete = taskToDelete.filter(function(obj)
         {
-            return obj.taskID !== taskID;
+            return obj.taskID !== ID;
         });
+
+        console.log(taskToDelete);
 
         dataStorage.projectObject[`${projectName}`] = taskToDelete;
 
         console.log(dataStorage.consoleLogStorage());
+    }
+
+    const getTaskIDFromAttribute = function(attribute, spliceIndex)
+    {
+        attribute = attribute.split(``);
+        attribute = attribute.splice(spliceIndex);
+        attribute = attribute.join(``);
+
+        return attribute;
     }
 
     return {
@@ -70,6 +80,7 @@ const updateObject = (function()
         addTask, 
         editTask, 
         deleteTask,
+        getTaskIDFromAttribute,
     };
 })();
 
