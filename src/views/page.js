@@ -140,7 +140,6 @@ const page = (function()
     const loadNewTaskForm = function(projectContentID)
     {
         let optionArray = [];
-        let optionValue = [`High`, `Medium`, `Low`];
 
         const newTaskInput = document.createElement(`div`);
         const taskNameLabel = document.createElement(`label`);
@@ -181,10 +180,10 @@ const page = (function()
 
         selectPriority.setAttribute(`name`, `priority`);
 
-        for (let i = 0; i < 3; i++)
+        for (let i = 0; i < dataStorage.optionValue.length; i++)
         {
-            optionArray[i].setAttribute(`value`, `${optionValue[i]}`);
-            optionArray[i].textContent = `${optionValue[i]}`;
+            optionArray[i].setAttribute(`value`, `${dataStorage.optionValue[i]}`);
+            optionArray[i].textContent = `${dataStorage.optionValue[i]}`;
         }
 
         newTaskButton.classList.add(`button-style`);
@@ -210,45 +209,109 @@ const page = (function()
         newTaskInput.appendChild(newTaskButton);
     }
 
-    const updateTaskListing = function(taskID, taskNameTextContent, dueDateTextContent, priorityColour, priorityTextContent)
+    const updateTaskListing = function(taskID, taskNameTextContent = ``, dueDateTextContent = ``, priorityColour = ``, priorityTextContent = ``, taskNameElement = `label`, dueDateElement = `label`, priorityElement = `label`)
     {
         const taskListing = document.querySelector(`#task-listing`);
 
         const taskContent = document.createElement(`div`);
         const deleteIcon = document.createElement(`label`);
-        const taskName = document.createElement(`label`);
-        const dueDate = document.createElement(`label`);
-        const priority = document.createElement(`label`);
+        const taskName = document.createElement(`${taskNameElement}`);
+        const dueDate = document.createElement(`${dueDateElement}`);
+        const priority = document.createElement(`${priorityElement}`);
         const editButton = document.createElement(`button`);
         
-        taskContent.classList.add(`task-contents-format`);
+        if (taskNameElement === `label` && dueDateElement === `label` && priorityElement === `label`)
+        {
+            taskContent.classList.add(`task-contents-format`);
+        }
+        else if (taskNameElement === `input` && dueDateElement === `input` && priorityElement === `select`)
+        {
+            taskContent.classList.add(`task-contents-format-edit`);
+        }
+
         taskContent.setAttribute(`id`, `task-content-${taskID}`);
 
-        deleteIcon.classList.add(`icon`);
-        deleteIcon.setAttribute(`id`, `delete-icon-${taskID}`);
-        deleteIcon.textContent = `X`;
+        if (taskNameElement === `label` && dueDateElement === `label` && priorityElement === `label`)
+        {
+            deleteIcon.classList.add(`icon`);
+            deleteIcon.setAttribute(`id`, `delete-icon-${taskID}`);
+            deleteIcon.textContent = `X`;
+        }
 
-        taskName.classList.add(`task-container-labels`);
+        taskName.classList.add(`task-name-label`);
         taskName.setAttribute(`id`, `task-name-${taskID}`);
-        taskName.textContent = `${taskNameTextContent}`;
 
-        dueDate.classList.add(`task-container-labels`);
+        if (taskNameElement === `label`)
+        {
+            taskName.textContent = `${taskNameTextContent}`;
+        }
+        else if (taskNameElement === `input`)
+        {
+            taskName.setAttribute(`type`, `text`);
+            taskName.setAttribute(`placeholder`, `Task Name`);
+        }
+
+        dueDate.classList.add(`due-date-label`);
         dueDate.setAttribute(`id`, `due-date-${taskID}`);
-        dueDate.textContent = `${dueDateTextContent}`;
 
-        priority.classList.add(`task-container-labels`);
+        if (dueDateElement === `label`) 
+        {
+            dueDate.textContent = `${dueDateTextContent}`;
+        }
+        else if (dueDateElement === `input`)
+        {
+            dueDate.setAttribute(`type`, `text`);
+            dueDate.setAttribute(`onblur`, "this.type='text'");
+            dueDate.setAttribute(`placeholder`, `YYYY/MM/DD`);
+            dueDate.setAttribute(`onfocus`, "this.type='date'");
+        }
+
+        priority.classList.add(`priority-label`);
         priority.classList.add(`${priorityColour}`);
         priority.setAttribute(`id`, `priority-${taskID}`);
-        priority.textContent = `${priorityTextContent}`;
 
+        if (priorityElement === `label`)
+        {
+            priority.textContent = `${priorityTextContent}`;
+        }
+        else if (priorityElement === `select`)
+        {
+            const optionArray = [];
+
+            for (let i = 0; i < dataStorage.optionValue.length; i++)
+            {
+                optionArray[i] = document.createElement(`option`);
+
+                optionArray[i].setAttribute(`value`, `${dataStorage.optionValue[i]}`);
+                optionArray[i].textContent = `${dataStorage.optionValue[i]}`;
+
+                priority.appendChild(optionArray[i]);
+            }
+        }
+
+        if (taskNameElement === `label` && dueDateElement === `label` && priorityElement === `label`)
+        {
+            editButton.classList.add(`task-container-buttons`);
+        }
+        else if (taskNameElement === `input` && dueDateElement === `input` && priorityElement === `select`)
+        {
+            editButton.classList.add(`task-container-buttons-edit`);
+        }
+        
         editButton.classList.add(`button-style`);
-        editButton.classList.add(`task-container-buttons`);
         editButton.setAttribute(`id`, `edit-button-${taskID}`);
         editButton.setAttribute(`type`, `menu`);
         editButton.textContent = `✏️ Edit`;
 
-        taskListing.appendChild(taskContent);
-        taskContent.appendChild(deleteIcon);
+        const separator = document.querySelector(`#separator-${taskID}`);
+
+        taskListing.insertBefore(taskContent, separator);
+        
+        if (taskNameElement === `label` && dueDateElement === `label` && priorityElement === `label`)
+        {
+            taskContent.appendChild(deleteIcon);
+        }
+
         taskContent.appendChild(taskName);
         taskContent.appendChild(dueDate);
         taskContent.appendChild(priority);
