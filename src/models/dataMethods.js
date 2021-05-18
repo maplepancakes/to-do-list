@@ -1,6 +1,6 @@
 import dataStorage from "./dataStorage";
 
-const updateObject = (function()
+const dataMethods = (function()
 {
     const incrementTaskID = function()
     {
@@ -36,15 +36,23 @@ const updateObject = (function()
         console.log(dataStorage.consoleLogStorage());
     }
 
-    const editTask = function(taskID, projectName, editedName, editedDescription, editedDueDate, editedPriority, editedNotes)
+    const editTask = function(ID, projectName, editedTaskName, editedDueDate, editedPriorityColour, editedPriority)
     {
+        let taskIndex = dataStorage.projectObject[`${projectName}`];
+        
+        taskIndex = taskIndex.findIndex(function(obj)
+        {
+            return obj.taskID === ID;
+        });
+
         let taskToEdit = dataStorage.projectObject[`${projectName}`];
 
-        taskToEdit[taskID].taskName = editedName;
-        taskToEdit[taskID].taskDescription = editedDescription;
-        taskToEdit[taskID].dueDate = editedDueDate;
-        taskToEdit[taskID].priority = editedPriority;
-        taskToEdit[taskID].notes = editedNotes;
+        taskToEdit[taskIndex].taskName = editedTaskName;
+        taskToEdit[taskIndex].dueDate = editedDueDate;
+        taskToEdit[taskIndex].priorityColour = editedPriorityColour;
+        taskToEdit[taskIndex].priority = editedPriority;
+        
+        console.log(dataStorage.consoleLogStorage());
     }
 
     const deleteTask = function(ID, projectName)
@@ -72,6 +80,22 @@ const updateObject = (function()
         return attribute;
     }
 
+    const chosenPriorityColour = function(priorityInputValue) // Returns colour based on chosen priority select input (e.g. If 'High' is chosen, then retrieve red colour)
+    {
+        if (priorityInputValue === `High`)
+        {
+            return dataStorage.priorityColour[0];
+        }
+        else if (priorityInputValue === `Medium`)
+        {
+            return dataStorage.priorityColour[1];
+        }
+        else if (priorityInputValue === `Low`)
+        {
+            return dataStorage.priorityColour[2];
+        }
+    };
+
     return {
         incrementTaskID,
         incrementProjectID,
@@ -81,7 +105,8 @@ const updateObject = (function()
         editTask, 
         deleteTask,
         getTaskIDFromAttribute,
+        chosenPriorityColour,
     };
 })();
 
-export default updateObject;
+export default dataMethods;
