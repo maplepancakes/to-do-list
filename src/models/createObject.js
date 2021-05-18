@@ -1,12 +1,12 @@
 import dataStorage from "./dataStorage";
-import updateObject from "./updateObject";
+import dataMethods from "./dataMethods";
 
 const createObject = (function()
 {
     const createProject = function(projectName)
     {
-        updateObject.addProject(projectName);
-        updateObject.incrementProjectID();
+        dataMethods.addProject(projectName);
+        dataMethods.incrementProjectID();
     }
 
     const createTask = function(taskName, dueDate, priorityColour, priority)
@@ -17,7 +17,7 @@ const createObject = (function()
         this.priorityColour = priorityColour;
         this.priority = priority;
 
-        updateObject.incrementTaskID();
+        dataMethods.incrementTaskID();
     }
 
     return {createProject, createTask};
