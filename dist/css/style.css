@@ -132,6 +132,13 @@ h1
     grid-column-gap: 5px;
 }
 
+.task-contents-format-edit
+{
+    display: grid;
+    grid-template-columns: auto 115px 80px 80px;
+    grid-column-gap: 5px;
+}
+
 #task-listing
 {
     margin-top: 10px;
@@ -153,7 +160,7 @@ h1
     margin-bottom: 10px;
 }
 
-.task-container-buttons
+.task-container-buttons, .task-container-buttons-edit
 {
     height: 25px;
 }
