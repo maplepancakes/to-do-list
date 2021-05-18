@@ -3,6 +3,88 @@ import dataMethods from "./models/dataMethods";
 import page from "./views/page";
 import dataStorage from "./models/dataStorage";
 
+let projectDescription = document.querySelectorAll(`.project-description`);
+let projectAddTaskIcon = document.querySelectorAll(`.project-add-task-icon`);
+//let taskDeleteIcon = document.querySelectorAll(`.icon`);
+//let taskEditButton = document.querySelectorAll(`.task-container-buttons`);
+
+const taskDeleteIcon = function()
+{
+    const taskHeader = document.querySelector(`#task-header`); // Retrieves header of the task section
+
+    const taskDeleteIcon = document.querySelectorAll(`.icon`); // Retrieves 'X' icon of tasks
+
+    for (let i = 0; i < taskDeleteIcon.length; i++)
+    {
+        taskDeleteIcon[i].onclick = function(e)
+        {
+            let taskID = taskDeleteIcon[i].id;
+
+            taskID = dataMethods.getTaskIDFromAttribute(taskID, 12);
+            taskID = parseInt(taskID);
+            
+            dataMethods.deleteTask(taskID, taskHeader.textContent);
+            
+            page.removeElementFromParent(`#task-listing`, `#task-content-${taskID}`);
+            page.removeElementFromParent(`#task-listing`, `#separator-${taskID}`);
+        };
+    }
+}
+
+const taskEditButton = function()
+{
+    const taskHeader = document.querySelector(`#task-header`); // Retrieves header of the task section
+
+    const taskEditButton = document.querySelectorAll(`.task-container-buttons`);
+
+    for (let i = 0; i < taskEditButton.length; i++)
+    {
+        taskEditButton[i].onclick = function(e)
+        {
+            let taskID = taskEditButton[i].id;
+
+            taskID = dataMethods.getTaskIDFromAttribute(taskID, 12);
+            taskID = parseInt(taskID);
+
+            if (taskEditButton[i].textContent === `✏️ Edit`)
+            {
+                page.removeElementFromParent(`#task-content-${taskID}`, `#task-name-${taskID}`);
+                page.removeElementFromParent(`#task-content-${taskID}`, `#due-date-${taskID}`);
+                page.removeElementFromParent(`#task-content-${taskID}`, `#priority-${taskID}`);
+                page.reUpdateTaskListingWithoutEditButton(taskID, `taskName`, `dueDate`, `priorityColour`, `priority`, `input`, `input`, `select`);
+                page.updateAttribute(`#edit-button-${taskID}`, `textContent`, `✔`);
+            }
+            else if (taskEditButton[i].textContent === `✔`);
+            {
+                const taskNameInput = document.querySelector(`#task-name-${taskID}`);
+                const dueDateInput = document.querySelector(`#due-date-${taskID}`);
+                const priorityInput = document.querySelector(`#priority-${taskID}`);
+
+                if (taskNameInput.value === ``)
+                {
+                    page.updateAttribute(`#task-name-${taskID}`, `placeholder`, `Type something here...`);
+                }
+
+                if (dueDateInput.value === ``)
+                {
+                    page.updateAttribute(`#due-date-${taskID}`, `placeholder`, `Input date here...`);
+                }
+
+                if (taskNameInput.value !== `` && dueDateInput.value !== ``)
+                {
+                    dataMethods.editTask(taskID, taskHeader.textContent, taskNameInput.value, dueDateInput.value, dataMethods.chosenPriorityColour(priorityInput.value), priorityInput.value);
+
+                    page.removeElementFromParent(`#task-content-${taskID}`, `#task-name-${taskID}`);
+                    page.removeElementFromParent(`#task-content-${taskID}`, `#due-date-${taskID}`);
+                    page.removeElementFromParent(`#task-content-${taskID}`, `#priority-${taskID}`);
+                    page.reUpdateTaskListingWithoutEditButton(taskID, taskNameInput.value, dueDateInput.value, dataMethods.chosenPriorityColour(priorityInput.value), priorityInput.value);
+                    page.updateAttribute(`#edit-button-${taskID}`, `textContent`, `✏️ Edit`);
+                }
+            }      
+        }
+    }
+}
+
 /*
 Things to fix: -
 1. 'Edit' and 'Delete' button must work after editing/deleting
@@ -22,30 +104,6 @@ dataMethods.deleteTask(0, `Miscellaneous Tasks`);
 */
 
 page.loadInitialContents(); // Loads initial contents of page
-
-let projectDescription = document.querySelectorAll(`.project-description`);
-
-/*for (let i = 0; i < projectDescription.length; i++)
-{
-    projectDescription[i].addEventListener(`click`, function(e)
-    {
-        console.log(`project-description-${i}`);
-    });
-}*/
-
-let projectAddTaskIcon = document.querySelectorAll(`.project-add-task-icon`);
-
-/*for (let i = 0; i < projectAddTaskIcon.length; i++)
-{
-    projectAddTaskIcon[i].addEventListener(`click`, function(e)
-    {
-        console.log(`project-add-task-icon-${i}`);
-    });
-}*/
-
-let taskDeleteIcon = document.querySelectorAll(`.icon`);
-
-let taskEditButton = document.querySelectorAll(`.task-container-buttons`);
 
 const openAddProjectFormButton = document.querySelector(`#new-project-button`); // Button to open form that allows for addition of projects
 
@@ -131,75 +189,12 @@ openAddProjectFormButton.onclick = function(e)
                             for (let i = 0; i < taskListing.length; i++)
                             {
                                 // Updates display with tasks
-                                page.appendSeparator(taskListing[i].taskID);
                                 page.updateTaskListing(taskListing[i].taskID, taskListing[i].taskName, taskListing[i].dueDate, taskListing[i].priorityColour, taskListing[i].priority);
+                                page.appendSeparator(taskListing[i].taskID);
                             }
 
-                            const taskHeader = document.querySelector(`#task-header`); // Retrieves header of the task section
-
-                            taskDeleteIcon = document.querySelectorAll(`.icon`); // Retrieves 'X' icon of tasks
-
-                            for (let i = 0; i < taskDeleteIcon.length; i++)
-                            {
-                                taskDeleteIcon[i].onclick = function(e)
-                                {   
-                                    let taskID = taskDeleteIcon[i].id;
-
-                                    taskID = dataMethods.getTaskIDFromAttribute(taskID, 12);
-                                    taskID = parseInt(taskID);
-
-                                    dataMethods.deleteTask(taskID, taskHeader.textContent);
-                                    
-                                    page.removeElementFromParent(`#task-listing`, `#task-content-${taskID}`);
-                                    page.removeElementFromParent(`#task-listing`, `#separator-${taskID}`);
-                                };
-                            }
-
-                            taskEditButton = document.querySelectorAll(`.task-container-buttons`);
-
-                            for (let i = 0; i < taskEditButton.length; i++)
-                            {
-                                taskEditButton[i].onclick = function(e)
-                                {
-                                    let taskID = taskEditButton[i].id;
-
-                                    taskID = dataMethods.getTaskIDFromAttribute(taskID, 12);
-                                    taskID = parseInt(taskID);
-                                    
-                                    page.removeElementFromParent(`#task-listing`, `#task-content-${taskID}`);
-                                    page.updateTaskListing(taskID, `taskName`, `dueDate`, `priorityColour`, `priority`, `input`, `input`, `select`);
-
-                                    const taskEditButtonEditing = document.querySelectorAll(`.task-container-buttons-edit`);
-
-                                    for (let i = 0; i < taskEditButtonEditing.length; i++)
-                                    {
-                                        taskEditButtonEditing[i].onclick = function(e)
-                                        {
-                                            const taskNameInput = document.querySelector(`#task-name-${taskID}`);
-                                            const dueDateInput = document.querySelector(`#due-date-${taskID}`);
-                                            const priorityInput = document.querySelector(`#priority-${taskID}`);
-
-                                            if (taskNameInput.value === ``)
-                                            {
-                                                page.updateAttribute(`#task-name-${taskID}`, `placeholder`, `Type something here...`);
-                                            }
-
-                                            if (dueDateInput.value === ``)
-                                            {
-                                                page.updateAttribute(`#due-date-${taskID}`, `placeholder`, `Input date here...`);
-                                            }
-
-                                            if (taskNameInput.value !== `` && dueDateInput.value !== ``)
-                                            {
-                                                dataMethods.editTask(taskID, taskHeader.textContent, taskNameInput.value, dueDateInput.value, dataMethods.chosenPriorityColour(priorityInput.value), priorityInput.value);
-
-                                                page.removeElementFromParent(`#task-listing`, `#task-content-${taskID}`);
-                                                page.updateTaskListing(taskID, taskNameInput.value, dueDateInput.value, dataMethods.chosenPriorityColour(priorityInput.value), priorityInput.value);
-                                            }
-                                        }
-                                    }                        
-                                }
-                            }
+                            taskDeleteIcon();
+                            taskEditButton();
                         };
                     }
 
@@ -248,8 +243,8 @@ openAddProjectFormButton.onclick = function(e)
                                         
                                         if ((projectDescription.textContent === taskHeader.textContent) && (taskNameInput[i].value !== `` && dueDateInput[i].value !== ``)) // If text content of selected project name in the 'Projects' section matches the text content of the task header in the task section, run code block
                                         {
-                                            page.appendSeparator(dataStorage.taskID);
                                             page.updateTaskListing(dataStorage.taskID, taskNameInput[i].value, dueDateInput[i].value, dataMethods.chosenPriorityColour(priorityInput[i].value), priorityInput[i].value); // Updates task to display for the selected project name
+                                            page.appendSeparator(dataStorage.taskID);
                                         }
 
                                         if (taskNameInput[i].value !== `` && dueDateInput[i].value !== ``) // If 'Task Name' and 'Due Date' inputs are not blank, run code block
@@ -263,23 +258,8 @@ openAddProjectFormButton.onclick = function(e)
                                             page.updateAttribute("input[name='due-date']", `placeholder`, `YYYY/MM/DD`);
                                         }
 
-                                        taskDeleteIcon = document.querySelectorAll(`.icon`); // Retrieves 'X' icon of tasks
-
-                                        for (let i = 0; i < taskDeleteIcon.length; i++)
-                                        {
-                                            taskDeleteIcon[i].onclick = function(e)
-                                            {
-                                                let taskID = taskDeleteIcon[i].id;
-
-                                                taskID = dataMethods.getTaskIDFromAttribute(taskID, 12);
-                                                taskID = parseInt(taskID);
-                                                
-                                                dataMethods.deleteTask(taskID, taskHeader.textContent);
-                                                
-                                                page.removeElementFromParent(`#task-listing`, `#task-content-${taskID}`);
-                                                page.removeElementFromParent(`#task-listing`, `#separator-${taskID}`);
-                                            };
-                                        }
+                                        taskDeleteIcon();
+                                        taskEditButton();
                                     };
                                 }
                             }
