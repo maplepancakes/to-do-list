@@ -1,14 +1,24 @@
 import createObject from "./models/createObject";
-import updateObject from "./models/updateObject";
+import dataMethods from "./models/dataMethods";
 import page from "./views/page";
 import dataStorage from "./models/dataStorage";
+
+/*
+Things to fix: -
+1. 'Edit' and 'Delete' button must work after editing/deleting
+2. 'Edit' button must work after addition of task
+3. Allow only one task form to be displayed at a time
+4. Local storage
+5. First added project should always be displayed on screen
+6. Refactor code
+*/
 
 /*
 -- FOR TESTING PURPOSES --
 createObject.createProject(`Miscellaneous Tasks`);
 let task1 = new createObject.createTask(`b`, `c`, `d`, `e`);
-updateObject.addTask(task1, `Miscellaneous Tasks`);
-updateObject.deleteTask(0, `Miscellaneous Tasks`);
+dataMethods.addTask(task1, `Miscellaneous Tasks`);
+dataMethods.deleteTask(0, `Miscellaneous Tasks`);
 */
 
 page.loadInitialContents(); // Loads initial contents of page
@@ -39,7 +49,7 @@ let taskEditButton = document.querySelectorAll(`.task-container-buttons`);
 
 const openAddProjectFormButton = document.querySelector(`#new-project-button`); // Button to open form that allows for addition of projects
 
-openAddProjectFormButton.addEventListener(`click`, function(e)
+openAddProjectFormButton.onclick = function(e)
 {
     if (openAddProjectFormButton.textContent === `- Add Project`) // Checks to see if `+ Add Project` button has been changed to `- Add Project`. If so, run code block
     {
@@ -53,7 +63,7 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
 
         const addProjectButton = document.querySelector(`#submit-new-project-button`); // Button that adds user inputted projects in the textbox
 
-        addProjectButton.addEventListener(`click`, function(e)
+        addProjectButton.onclick = function(e)
         {
             const newProjectInput = document.querySelector(`#new-project-input`);
 
@@ -90,11 +100,11 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
 
                             deleteProjectButton.onclick = function(e)
                             {
-                                updateObject.deleteProject(projectDescription[i].textContent); // Removes project from dataStorage.projectObject
+                                dataMethods.deleteProject(projectDescription[i].textContent); // Removes project from dataStorage.projectObject
 
                                 let projectContentID = projectDescription[i].id; // Variable for identifying ID of existing projects in the 'Projects' section
                                 
-                                projectContentID = updateObject.getTaskIDFromAttribute(projectContentID, 20);
+                                projectContentID = dataMethods.getTaskIDFromAttribute(projectContentID, 20);
 
                                 if (taskContent) // Checks if there are any tasks on display, if yes, run code block
                                 {
@@ -112,6 +122,7 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
                             {
                                 // Removes all tasks from display
                                 page.removeAllElementsFromParent(`#task-listing`, `.task-contents-format`);
+                                page.removeAllElementsFromParent(`#task-listing`, `.task-contents-format-edit`);
                                 page.removeAllElementsFromParent(`#task-listing`, `.separator`);
                             }
 
@@ -120,8 +131,8 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
                             for (let i = 0; i < taskListing.length; i++)
                             {
                                 // Updates display with tasks
-                                page.updateTaskListing(taskListing[i].taskID, taskListing[i].taskName, taskListing[i].dueDate, taskListing[i].priorityColour, taskListing[i].priority);
                                 page.appendSeparator(taskListing[i].taskID);
+                                page.updateTaskListing(taskListing[i].taskID, taskListing[i].taskName, taskListing[i].dueDate, taskListing[i].priorityColour, taskListing[i].priority);
                             }
 
                             const taskHeader = document.querySelector(`#task-header`); // Retrieves header of the task section
@@ -131,13 +142,13 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
                             for (let i = 0; i < taskDeleteIcon.length; i++)
                             {
                                 taskDeleteIcon[i].onclick = function(e)
-                                {
+                                {   
                                     let taskID = taskDeleteIcon[i].id;
 
-                                    taskID = updateObject.getTaskIDFromAttribute(taskID, 12);
+                                    taskID = dataMethods.getTaskIDFromAttribute(taskID, 12);
                                     taskID = parseInt(taskID);
-                                    
-                                    updateObject.deleteTask(taskID, taskHeader.textContent);
+
+                                    dataMethods.deleteTask(taskID, taskHeader.textContent);
                                     
                                     page.removeElementFromParent(`#task-listing`, `#task-content-${taskID}`);
                                     page.removeElementFromParent(`#task-listing`, `#separator-${taskID}`);
@@ -150,7 +161,43 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
                             {
                                 taskEditButton[i].onclick = function(e)
                                 {
-                                    console.log(taskEditButton[i].id);
+                                    let taskID = taskEditButton[i].id;
+
+                                    taskID = dataMethods.getTaskIDFromAttribute(taskID, 12);
+                                    taskID = parseInt(taskID);
+                                    
+                                    page.removeElementFromParent(`#task-listing`, `#task-content-${taskID}`);
+                                    page.updateTaskListing(taskID, `taskName`, `dueDate`, `priorityColour`, `priority`, `input`, `input`, `select`);
+
+                                    const taskEditButtonEditing = document.querySelectorAll(`.task-container-buttons-edit`);
+
+                                    for (let i = 0; i < taskEditButtonEditing.length; i++)
+                                    {
+                                        taskEditButtonEditing[i].onclick = function(e)
+                                        {
+                                            const taskNameInput = document.querySelector(`#task-name-${taskID}`);
+                                            const dueDateInput = document.querySelector(`#due-date-${taskID}`);
+                                            const priorityInput = document.querySelector(`#priority-${taskID}`);
+
+                                            if (taskNameInput.value === ``)
+                                            {
+                                                page.updateAttribute(`#task-name-${taskID}`, `placeholder`, `Type something here...`);
+                                            }
+
+                                            if (dueDateInput.value === ``)
+                                            {
+                                                page.updateAttribute(`#due-date-${taskID}`, `placeholder`, `Input date here...`);
+                                            }
+
+                                            if (taskNameInput.value !== `` && dueDateInput.value !== ``)
+                                            {
+                                                dataMethods.editTask(taskID, taskHeader.textContent, taskNameInput.value, dueDateInput.value, dataMethods.chosenPriorityColour(priorityInput.value), priorityInput.value);
+
+                                                page.removeElementFromParent(`#task-listing`, `#task-content-${taskID}`);
+                                                page.updateTaskListing(taskID, taskNameInput.value, dueDateInput.value, dataMethods.chosenPriorityColour(priorityInput.value), priorityInput.value);
+                                            }
+                                        }
+                                    }                        
                                 }
                             }
                         };
@@ -164,7 +211,7 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
                         {
                             let projectContentID = projectAddTaskIcon[i].id; // Variable for identifying ID of existing projects in the 'Projects' section
                                 
-                            projectContentID = updateObject.getTaskIDFromAttribute(projectContentID, 9);
+                            projectContentID = dataMethods.getTaskIDFromAttribute(projectContentID, 9);
 
                             if (projectAddTaskIcon[i].textContent === `-`) // If '+' icon changes to '-' icon, run code block
                             {
@@ -184,24 +231,8 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
 
                                 for (let i = 0; i < newTaskButton.length; i++)
                                 {
-                                    newTaskButton[i].addEventListener(`click`, function(e)
+                                    newTaskButton[i].onclick = function(e)
                                     {
-                                        const chosenPriorityColour = function() // Returns colour based on chosen priority select input (e.g. If 'High' is chosen, then retrieve red colour)
-                                        {
-                                            if (priorityInput[i].value === `High`)
-                                            {
-                                                return dataStorage.priorityColour[0];
-                                            }
-                                            else if (priorityInput[i].value === `Medium`)
-                                            {
-                                                return dataStorage.priorityColour[1];
-                                            }
-                                            else if (priorityInput[i].value === `Low`)
-                                            {
-                                                return dataStorage.priorityColour[2];
-                                            }
-                                        };
-
                                         if (taskNameInput[i].value === ``)
                                         {
                                             taskNameInput[i].setAttribute(`placeholder`, `Type something here...`); // If 'Task Name' textbox input is blank, set placeholder
@@ -217,14 +248,14 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
                                         
                                         if ((projectDescription.textContent === taskHeader.textContent) && (taskNameInput[i].value !== `` && dueDateInput[i].value !== ``)) // If text content of selected project name in the 'Projects' section matches the text content of the task header in the task section, run code block
                                         {
-                                            page.updateTaskListing(dataStorage.taskID, taskNameInput[i].value, dueDateInput[i].value, chosenPriorityColour(), priorityInput[i].value); // Updates task to display for the selected project name
-                                            page.appendSeparator(dataStorage.taskID); 
+                                            page.appendSeparator(dataStorage.taskID);
+                                            page.updateTaskListing(dataStorage.taskID, taskNameInput[i].value, dueDateInput[i].value, dataMethods.chosenPriorityColour(priorityInput[i].value), priorityInput[i].value); // Updates task to display for the selected project name
                                         }
 
                                         if (taskNameInput[i].value !== `` && dueDateInput[i].value !== ``) // If 'Task Name' and 'Due Date' inputs are not blank, run code block
                                         {
-                                            const newTask = new createObject.createTask(taskNameInput[i].value, dueDateInput[i].value, chosenPriorityColour(), priorityInput[i].value); // Creates new task based on form input
-                                            updateObject.addTask(newTask, projectDescription.textContent); // Stores task into selected project name
+                                            const newTask = new createObject.createTask(taskNameInput[i].value, dueDateInput[i].value, dataMethods.chosenPriorityColour(priorityInput[i].value), priorityInput[i].value); // Creates new task based on form input
+                                            dataMethods.addTask(newTask, projectDescription.textContent); // Stores task into selected project name
 
                                             page.updateAttribute("input[name='task-name']", `value`, ``);
                                             page.updateAttribute("input[name='task-name']", `placeholder`, `e.g. Feed dog`);
@@ -240,16 +271,16 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
                                             {
                                                 let taskID = taskDeleteIcon[i].id;
 
-                                                taskID = updateObject.getTaskIDFromAttribute(taskID, 12);
+                                                taskID = dataMethods.getTaskIDFromAttribute(taskID, 12);
                                                 taskID = parseInt(taskID);
                                                 
-                                                updateObject.deleteTask(taskID, taskHeader.textContent);
+                                                dataMethods.deleteTask(taskID, taskHeader.textContent);
                                                 
                                                 page.removeElementFromParent(`#task-listing`, `#task-content-${taskID}`);
                                                 page.removeElementFromParent(`#task-listing`, `#separator-${taskID}`);
                                             };
                                         }
-                                    });
+                                    };
                                 }
                             }
                         };
@@ -260,6 +291,6 @@ openAddProjectFormButton.addEventListener(`click`, function(e)
             {
                 page.updateAttribute(`#new-project-input`, `placeholder`, `Type something here...`); // Updates textbox placeholder from 'e.g. Daily Tasks' to 'Type something here...'
             }
-        });
+        };
     }
-});
+};
