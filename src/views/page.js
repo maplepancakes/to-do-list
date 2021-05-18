@@ -209,27 +209,60 @@ const page = (function()
         newTaskInput.appendChild(newTaskButton);
     }
 
-    const updateTaskListing = function(taskID, taskNameTextContent = ``, dueDateTextContent = ``, priorityColour = ``, priorityTextContent = ``, taskNameElement = `label`, dueDateElement = `label`, priorityElement = `label`)
+    const updateTaskListing = function(taskID, taskNameTextContent = ``, dueDateTextContent = ``, priorityColour = ``, priorityTextContent = ``)
     {
         const taskListing = document.querySelector(`#task-listing`);
 
         const taskContent = document.createElement(`div`);
         const deleteIcon = document.createElement(`label`);
+        const taskName = document.createElement(`label`);
+        const dueDate = document.createElement(`label`);
+        const priority = document.createElement(`label`);
+        const editButton = document.createElement(`button`);
+        
+        taskContent.classList.add(`task-contents-format`);
+        taskContent.setAttribute(`id`, `task-content-${taskID}`);
+
+        deleteIcon.classList.add(`icon`);
+        deleteIcon.setAttribute(`id`, `delete-icon-${taskID}`);
+        deleteIcon.textContent = `X`;
+
+        taskName.classList.add(`task-name-label`);
+        taskName.setAttribute(`id`, `task-name-${taskID}`);
+        taskName.textContent = `${taskNameTextContent}`;
+
+        dueDate.classList.add(`due-date-label`);
+        dueDate.setAttribute(`id`, `due-date-${taskID}`);
+        dueDate.textContent = `${dueDateTextContent}`;
+
+        priority.classList.add(`priority-label`);
+        priority.classList.add(`${priorityColour}`);
+        priority.setAttribute(`id`, `priority-${taskID}`);
+        priority.textContent = `${priorityTextContent}`;
+ 
+        editButton.classList.add(`task-container-buttons`);        
+        editButton.classList.add(`button-style`);
+        editButton.setAttribute(`id`, `edit-button-${taskID}`);
+        editButton.setAttribute(`type`, `menu`);
+        editButton.textContent = `✏️ Edit`;
+
+        taskListing.appendChild(taskContent)
+        taskContent.appendChild(deleteIcon);
+        taskContent.appendChild(taskName);
+        taskContent.appendChild(dueDate);
+        taskContent.appendChild(priority);
+        taskContent.appendChild(editButton);
+    }
+
+    const reUpdateTaskListingWithoutEditButton = function (taskID, taskNameTextContent = ``, dueDateTextContent = ``, priorityColour = ``, priorityTextContent = ``, taskNameElement = `label`, dueDateElement = `label`, priorityElement = `label`)
+    {
+        const taskContent = document.querySelector(`#task-content-${taskID}`);
+        const taskEditButton = document.querySelector(`#edit-button-${taskID}`);
+
+        const deleteIcon = document.createElement(`label`);
         const taskName = document.createElement(`${taskNameElement}`);
         const dueDate = document.createElement(`${dueDateElement}`);
         const priority = document.createElement(`${priorityElement}`);
-        const editButton = document.createElement(`button`);
-        
-        if (taskNameElement === `label` && dueDateElement === `label` && priorityElement === `label`)
-        {
-            taskContent.classList.add(`task-contents-format`);
-        }
-        else if (taskNameElement === `input` && dueDateElement === `input` && priorityElement === `select`)
-        {
-            taskContent.classList.add(`task-contents-format-edit`);
-        }
-
-        taskContent.setAttribute(`id`, `task-content-${taskID}`);
 
         if (taskNameElement === `label` && dueDateElement === `label` && priorityElement === `label`)
         {
@@ -289,33 +322,9 @@ const page = (function()
             }
         }
 
-        if (taskNameElement === `label` && dueDateElement === `label` && priorityElement === `label`)
-        {
-            editButton.classList.add(`task-container-buttons`);
-        }
-        else if (taskNameElement === `input` && dueDateElement === `input` && priorityElement === `select`)
-        {
-            editButton.classList.add(`task-container-buttons-edit`);
-        }
-        
-        editButton.classList.add(`button-style`);
-        editButton.setAttribute(`id`, `edit-button-${taskID}`);
-        editButton.setAttribute(`type`, `menu`);
-        editButton.textContent = `✏️ Edit`;
-
-        const separator = document.querySelector(`#separator-${taskID}`);
-
-        taskListing.insertBefore(taskContent, separator);
-        
-        if (taskNameElement === `label` && dueDateElement === `label` && priorityElement === `label`)
-        {
-            taskContent.appendChild(deleteIcon);
-        }
-
-        taskContent.appendChild(taskName);
-        taskContent.appendChild(dueDate);
-        taskContent.appendChild(priority);
-        taskContent.appendChild(editButton);
+        taskContent.insertBefore(taskName, taskEditButton);
+        taskContent.insertBefore(dueDate, taskEditButton);
+        taskContent.insertBefore(priority, taskEditButton);
     }
 
     const appendSeparator = function(taskID)
@@ -378,6 +387,7 @@ const page = (function()
         updateProjectListing,
         loadNewTaskForm,
         updateTaskListing,
+        reUpdateTaskListingWithoutEditButton,
         appendSeparator,
         updateAttribute, 
         updateAllAttributes,
