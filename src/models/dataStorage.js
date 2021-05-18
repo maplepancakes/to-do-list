@@ -4,12 +4,9 @@ const dataStorage = (function()
     let projectID = 0;
     let projectObject = {};
 
-    const priorityColour =
-    [   
-        `priority-color-high`,
-        `priority-color-medium`,
-        `priority-color-low`,
-    ];
+    const optionValue = [`High`, `Medium`, `Low`,];
+
+    const priorityColour = [`priority-color-high`, `priority-color-medium`, `priority-color-low`,];
 
     const getTaskForProject = function(projectName)
     {
@@ -25,6 +22,7 @@ const dataStorage = (function()
         taskID,
         projectID,
         projectObject,
+        optionValue,
         priorityColour,
         getTaskForProject,
         consoleLogStorage,
