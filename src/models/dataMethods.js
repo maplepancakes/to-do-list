@@ -5,34 +5,42 @@ const dataMethods = (function()
     const incrementTaskID = function()
     {
         dataStorage.taskID++;
+        localStorage.setItem(`taskID`, JSON.stringify(dataStorage.taskID));
+
         console.log(`Increased taskID to: ${dataStorage.taskID}`);
     }
 
     const incrementProjectID = function()
     {
         dataStorage.projectID++;
+        localStorage.setItem(`projectID`, JSON.stringify(dataStorage.projectID));
+
         console.log(`Increased projectID to: ${dataStorage.projectID}`);
     }
 
     const addProject = function(value)
     {
-        dataStorage.projectObject[`${value}`] = [];
+        dataStorage.projectObject[`${value}`] = [`${dataStorage.projectID}`];
+        localStorage.setItem(`projectObject`, JSON.stringify(dataStorage.projectObject));
+        
         console.log(`Added ${value} to projectObject`);
-
         dataStorage.consoleLogStorage();
     }
 
     const deleteProject = function(value)
     {
        delete dataStorage.projectObject[`${value}`];
-       console.log(`Deleted ${value} from projectObject`);
+       localStorage.setItem(`projectObject`, JSON.stringify(dataStorage.projectObject));
 
+       console.log(`Deleted ${value} from projectObject`);
        dataStorage.consoleLogStorage();
     }
 
     const addTask = function(task, projectName)
     {
         dataStorage.projectObject[`${projectName}`].push(task);
+        localStorage.setItem(`projectObject`, JSON.stringify(dataStorage.projectObject));
+
         console.log(dataStorage.consoleLogStorage());
     }
 
@@ -42,7 +50,7 @@ const dataMethods = (function()
         
         taskIndex = taskIndex.findIndex(function(obj)
         {
-            return obj.taskID === ID;
+            return parseInt(obj.taskID) === ID;
         });
 
         let taskToEdit = dataStorage.projectObject[`${projectName}`];
@@ -51,7 +59,8 @@ const dataMethods = (function()
         taskToEdit[taskIndex].dueDate = editedDueDate;
         taskToEdit[taskIndex].priorityColour = editedPriorityColour;
         taskToEdit[taskIndex].priority = editedPriority;
-        
+        localStorage.setItem(`projectObject`, JSON.stringify(dataStorage.projectObject));
+
         console.log(dataStorage.consoleLogStorage());
     }
 
@@ -61,12 +70,13 @@ const dataMethods = (function()
 
         taskToDelete = taskToDelete.filter(function(obj)
         {
-            return obj.taskID !== ID;
+            return parseInt(obj.taskID) !== ID;
         });
 
         console.log(taskToDelete);
 
         dataStorage.projectObject[`${projectName}`] = taskToDelete;
+        localStorage.setItem(`projectObject`, JSON.stringify(dataStorage.projectObject));
 
         console.log(dataStorage.consoleLogStorage());
     }
