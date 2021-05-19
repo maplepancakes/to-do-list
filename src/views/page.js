@@ -3,6 +3,7 @@ import dataStorage from "../models/dataStorage";
 const page = (function()
 {
     const body = document.querySelector(`body`);
+
     const mainContentContainer = document.createElement(`div`);
 
     mainContentContainer.setAttribute(`id`, `content`);
