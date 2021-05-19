@@ -1,15 +1,17 @@
-body
+html, body
 {
     background-color: #616161;
     font-family: 'Roboto', sans-serif;
     color: white;
+    margin: 0;
+    padding: 0;
 }
 
 #content
 {
     display: grid;
     grid-template-columns: 200px auto;
-    grid-template-rows: 100vh auto;
+    grid-template-rows: 89.5vh auto;
 }
 
 header
