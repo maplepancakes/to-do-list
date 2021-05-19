@@ -17,6 +17,7 @@ html, body
 header
 {
     position: absolute;
+    z-index: 1;
     min-width: 100vw;
     background-color: #212121;
     display: flex;
@@ -113,6 +114,7 @@ h1
 
 #task-header-container
 {
+    margin-top: 90px;
     display: flex;
 }
 
