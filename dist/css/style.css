@@ -113,14 +113,14 @@ h1
     display: flex;
 }
 
-#new-task-input, #new-project-form-container
+.new-task-input, #new-project-form-container
 {
     display: grid;
     grid-template-rows: auto;
     grid-row-gap: 6px;
 }
 
-#new-task-button, #submit-new-project-button
+.new-task-button, #submit-new-project-button
 {
     min-height: 30px;
 }
