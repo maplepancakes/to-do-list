@@ -3,6 +3,7 @@ V1.00 - Andrew
     1. Initial Release 
     2. Things to reconsider for the future: -
         - Code refactoring
+        - Keyboard support
 */
 
 import createObject from "./models/createObject";
