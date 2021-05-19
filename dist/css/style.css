@@ -11,7 +11,7 @@ html, body
 {
     display: grid;
     grid-template-columns: 200px auto;
-    grid-template-rows: 89.5vh auto;
+    grid-template-rows: 100vh auto;
 }
 
 header
