@@ -1,9 +1,9 @@
 /*
-V1.00 - Andrew
-    1. Initial Release 
-    2. Things to reconsider for the future: -
+V1.00 - Andrew: INITIAL RELEASE
+    1. Things to reconsider for the future: -
         - Code refactoring
         - Keyboard support
+        - Sorting based on date
 */
 
 import createObject from "./models/createObject";
