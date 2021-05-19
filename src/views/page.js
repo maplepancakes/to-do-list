@@ -77,12 +77,45 @@ const page = (function()
         taskHeaderContainer.appendChild(deleteProjectButton);
         taskContainer.appendChild(taskListing);
     }
+
+    const loadExistingProjects = function()
+    {
+        const projectListing = document.querySelector(`#project-listing`);
+
+        console.log(`Loading existing projects... `);
+
+        for (const key in dataStorage.projectObject)
+        {
+            const projectContent = document.createElement(`div`);
+            const projectDescription = document.createElement(`div`);
+            const addTaskIcon = document.createElement(`div`);
+            
+            projectContent.classList.add(`project-contents-format`);
+            projectContent.classList.add(`project-contents`);
+            projectContent.setAttribute(`id`, `project-content-${dataStorage.projectObject[`${key}`][0]}`);
+            
+            projectDescription.classList.add(`project-content`);
+            projectDescription.classList.add(`project-description`);
+            projectDescription.setAttribute(`id`, `project-description-${dataStorage.projectObject[`${key}`][0]}`);
+            projectDescription.textContent = key;
+
+            addTaskIcon.classList.add(`project-content`);
+            addTaskIcon.classList.add(`project-add-task-icon`);
+            addTaskIcon.setAttribute(`id`, `add-task-${dataStorage.projectObject[`${key}`][0]}`);
+            addTaskIcon.textContent = `+`;
+
+            projectListing.appendChild(projectContent);
+            projectContent.appendChild(projectDescription);
+            projectContent.appendChild(addTaskIcon);
+        }
+    }
     
     const loadInitialContents = function()
     {
         loadHeader();
         loadProjectContainer();
         loadTaskContainer();
+        loadExistingProjects();
     }
 
     const loadNewProjectForm = function()
@@ -114,7 +147,7 @@ const page = (function()
 
         const projectContent = document.createElement(`div`);
         const projectDescription = document.createElement(`div`);
-        const addTaskButton = document.createElement(`div`);
+        const addTaskIcon = document.createElement(`div`);
 
         console.log(`Updating project listing with value: ${value}`);
 
@@ -127,14 +160,14 @@ const page = (function()
         projectDescription.setAttribute(`id`, `project-description-${dataStorage.projectID}`);
         projectDescription.textContent = value;
 
-        addTaskButton.classList.add(`project-content`);
-        addTaskButton.classList.add(`project-add-task-icon`);
-        addTaskButton.setAttribute(`id`, `add-task-${dataStorage.projectID}`);
-        addTaskButton.textContent = `+`;
+        addTaskIcon.classList.add(`project-content`);
+        addTaskIcon.classList.add(`project-add-task-icon`);
+        addTaskIcon.setAttribute(`id`, `add-task-${dataStorage.projectID}`);
+        addTaskIcon.textContent = `+`;
 
         projectListing.appendChild(projectContent);
         projectContent.appendChild(projectDescription);
-        projectContent.appendChild(addTaskButton);
+        projectContent.appendChild(addTaskIcon);
     }
 
     const loadNewTaskForm = function(projectContentID)
@@ -157,7 +190,7 @@ const page = (function()
 
         console.log(`Loading new task form...`);
 
-        newTaskInput.setAttribute(`id`, `new-task-input`);
+        newTaskInput.classList.add(`new-task-input`);
 
         taskNameLabel.setAttribute(`for`, `task-name`);
         taskNameLabel.textContent = `Task Name:`;
@@ -187,7 +220,7 @@ const page = (function()
         }
 
         newTaskButton.classList.add(`button-style`);
-        newTaskButton.setAttribute(`id`, `new-task-button`);
+        newTaskButton.classList.add(`new-task-button`);
         newTaskButton.setAttribute(`type`, `submit`);
         newTaskButton.textContent = `Add Task`;
 
